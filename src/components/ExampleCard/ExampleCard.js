@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ProgressRing from '../ProgressRing/ProgressRing'
 
 const ExampleCard = () => {
-    const [progress, setProgress] = useState(10)
-
+    const [progress, setProgress] = useState(0)
 
     useEffect(() => {
-        if (progress === 100) {
-            return () => clearInterval()       
-        }
         const interval = setInterval(() => {
-            setProgress(progress + 10);
-            console.log(progress)
-        }, 1000);
+            if (progress === 100)
+                return () => clearInterval(interval)
+            return setProgress(progress + 1)
+        }, 10);
+        return () => clearInterval(interval)
     }, [progress])
 
     return <ProgressRing
